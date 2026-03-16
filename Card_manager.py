@@ -1,133 +1,55 @@
 import keyboard
 import Deck_manager
 import Activate_cards
+import time
+import Card_manager
 
-def card_player(player_deck_1, player_deck_2, player_deck_3, player_deck_4, player_deck_5,deck_selected):
-    if keyboard.is_pressed("space"):
-        return "reset"
-    if deck_selected == 1:
-            if keyboard.is_pressed("1"):
-                Activate_cards.play_card(player_deck_1[0])
-                return "false"
-            elif keyboard.is_pressed("2"):
-                Activate_cards.play_card(player_deck_1[1])
-                return "false"
-            elif keyboard.is_pressed("3"):
-                Activate_cards.play_card(player_deck_1[2])
-                return "false"
-            elif keyboard.is_pressed("4"):
-                Activate_cards.play_card(player_deck_1[3])
-                return "false"
-            elif keyboard.is_pressed("5"):
-                Activate_cards.play_card(player_deck_1[4])
-                return "false"
-            else:
-                return "true"
-    elif deck_selected == 2:
-            if keyboard.is_pressed("1"):
-                Activate_cards.play_card(player_deck_2[0])
-                return "false"
-            elif keyboard.is_pressed("2"):
-                Activate_cards.play_card(player_deck_2[1])
-                return "false"
-            elif keyboard.is_pressed("3"):
-                Activate_cards.play_card(player_deck_2[2])
-                return "false"
-            elif keyboard.is_pressed("4"):
-                Activate_cards.play_card(player_deck_2[3])
-                return "false"
-            elif keyboard.is_pressed("5"):
-                Activate_cards.play_card(player_deck_2[4])
-                return "false"
-            else:
-                return "true"
-    elif deck_selected == 3:
-            if keyboard.is_pressed("1"):
-                Activate_cards.play_card(player_deck_3[0])
-                return "false"
-            elif keyboard.is_pressed("2"):
-                Activate_cards.play_card(player_deck_3[1])
-                return "false"
-            elif keyboard.is_pressed("3"):
-                Activate_cards.play_card(player_deck_3[2])
-                return "false"
-            elif keyboard.is_pressed("4"):
-                Activate_cards.play_card(player_deck_3[3])
-                return "false"
-            elif keyboard.is_pressed("5"):
-                Activate_cards.play_card(player_deck_3[4])
-                return "false"
-            else:
-                return "true"
-    elif deck_selected == 4:
-            if keyboard.is_pressed("1"):
-                Activate_cards.play_card(player_deck_4[0])
-                return "false"
-            elif keyboard.is_pressed("2"):
-                Activate_cards.play_card(player_deck_4[1])
-                return "false"
-            elif keyboard.is_pressed("3"):
-                Activate_cards.play_card(player_deck_4[2])
-                return "false"
-            elif keyboard.is_pressed("4"):
-                Activate_cards.play_card(player_deck_4[3])
-                return "false"
-            elif keyboard.is_pressed("5"):
-                Activate_cards.play_card(player_deck_4[4])
-                return "false"
-            else:
-                return "true"
-    elif deck_selected == 5:
-            if keyboard.is_pressed("1"):
-                Activate_cards.play_card(player_deck_5[0])
-                return "false"
-            elif keyboard.is_pressed("2"):
-                Activate_cards.play_card(player_deck_5[1])
-                return "false"
-            elif keyboard.is_pressed("3"):
-                Activate_cards.play_card(player_deck_5[2])
-                return "false"
-            elif keyboard.is_pressed("4"):
-                Activate_cards.play_card(player_deck_5[3])
-                return "false"
-            elif keyboard.is_pressed("5"):
-                Activate_cards.play_card(player_deck_5[4])
-                return "false"
-            else:
-                return "true"
+'''
+This scrip handles the card playing code
+'''
 
-
-def card_menue(player_deck_1, player_deck_2, player_deck_3, player_deck_4, player_deck_5):
-    deck_selected = 0
-    sentry = "true"
-    Deck_manager.draw_decks()
-    while sentry == "true":
-        if deck_selected == 0:
-            if keyboard.is_pressed("1"):
-                Deck_manager.draw_card_in_decks(player_deck_1)
-                deck_selected = 1
-            elif keyboard.is_pressed("2"):
-                Deck_manager.draw_card_in_decks(player_deck_2)
-                deck_selected = 2
-            elif keyboard.is_pressed("3"):
-                Deck_manager.draw_card_in_decks(player_deck_3)
-                deck_selected = 3
-            elif keyboard.is_pressed("4"):
-                deck_selected = 4
-                Deck_manager.draw_card_in_decks(player_deck_4)
-            elif keyboard.is_pressed("5"):
-                deck_selected = 5
-                Deck_manager.draw_card_in_decks(player_deck_5)
-            else:
-                deck_selected = 0
+def card_player(current_hand,player,player_id,blocked_terrian,cooldown,active_deck): #this is the code to play a card after getting the active deck
+        for i in range(5):
+            if keyboard.is_pressed(str(i+1)) and current_hand[i] != -1:
+                Activate_cards.play_card(current_hand[i],player,player_id,blocked_terrian)
+                current_hand[i] = -1
+                Deck_manager.draw_card_in_decks(current_hand,"green")
+        if all(i == -1 for i in current_hand): #adds cooldown to played deck
+            cooldown[active_deck-1] += 2
+            return False
         else:
-            sentry = card_player(player_deck_1, player_deck_2, player_deck_3, player_deck_4, player_deck_5,deck_selected)
-            if sentry == "reset":
-                deck_selected = 0
-                Deck_manager.draw_decks()
-                sentry = "true"
-
+            return True
             
-        if keyboard.is_pressed("escape"):
+        
+def card_menue(decks,player,player_id,blocked_terrian,cooldowns): # this is where the player chooses a deck
+    deck_selected = 0
+    active_deck = 0
+    current_hand = []
+    sentry = True
+    Deck_manager.draw_decks(cooldowns)
+    while sentry:
+        if deck_selected == 0:
+            for i in range(5): #preview/select decks
+                key = str(i + 1)
+                if keyboard.is_pressed(key):
+                    active_deck = i + 1
+                    if cooldowns[i] > 0:
+                        Deck_manager.draw_card_in_decks(decks[i],"red")
+                    else:
+                        Deck_manager.draw_card_in_decks(decks[i])
+                    current_hand = decks[i][:]
+                    break
+            if keyboard.is_pressed("space"): #go back to main deck view
+                active_deck = 0
+                Deck_manager.draw_decks(cooldowns)
+                current_hand = []
+
+        if active_deck != 0 and keyboard.is_pressed("enter") and cooldowns[active_deck-1] < 1: #confirm active deck
+            deck_selected = active_deck
+            Deck_manager.draw_card_in_decks(current_hand,"green")
+
+        if deck_selected != 0: #moves to playing card function
+            sentry = card_player(current_hand,player,player_id,blocked_terrian,cooldowns,deck_selected)
+
+        if keyboard.is_pressed("escape"): #infinite loops stopper for debuging
             sentry = False
-    print("Card selected")

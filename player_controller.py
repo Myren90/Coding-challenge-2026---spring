@@ -1,12 +1,15 @@
 import turtle
+import keyboard
 import grid_turtle_code
 
-def setup_player():
-    player_id = [0,0]
-    t = turtle.Turtle()
+"""
+player code, handles player health and will manage several different parts
+"""
+            
+
+def setup_player(t,player_id):
     t.shape("circle")
     t.color("blue")
-    player_id = grid_turtle_code.goto_grid(t,10,10, player_id)
+    grid_turtle_code.goto_grid(t,10,10, player_id)
     t.penup()
-    player_id = grid_turtle_code.move_grid(t,5,5, player_id)
-    print(player_id)
+    
