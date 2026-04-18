@@ -11,14 +11,14 @@ This scrip handles the card playing code
 def card_player(current_hand,player,player_id,blocked_terrian,cooldown,active_deck): #this is the code to play a card after getting the active deck
         for i in range(5):
             if keyboard.is_pressed(str(i+1)) and current_hand[i] != -1:
-                Activate_cards.play_card(current_hand[i],player,player_id,blocked_terrian)
+                player_id = Activate_cards.play_card(current_hand[i],player,player_id,blocked_terrian)
                 current_hand[i] = -1
                 Deck_manager.draw_card_in_decks(current_hand,"green")
         if all(i == -1 for i in current_hand): #adds cooldown to played deck
             cooldown[active_deck-1] += 2
-            return False
+            return False,player_id
         else:
-            return True
+            return True,player_id
             
         
 def card_menue(decks,player,player_id,blocked_terrian,cooldowns): # this is where the player chooses a deck
@@ -49,7 +49,8 @@ def card_menue(decks,player,player_id,blocked_terrian,cooldowns): # this is wher
             Deck_manager.draw_card_in_decks(current_hand,"green")
 
         if deck_selected != 0: #moves to playing card function
-            sentry = card_player(current_hand,player,player_id,blocked_terrian,cooldowns,deck_selected)
+            sentry,player_id = card_player(current_hand,player,player_id,blocked_terrian,cooldowns,deck_selected)
 
-        if keyboard.is_pressed("escape"): #infinite loops stopper for debuging
+        if keyboard.is_pressed("9"): #infinite loops stopper for debuging
             sentry = False
+    return player_id
