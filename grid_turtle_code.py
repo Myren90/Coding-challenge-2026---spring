@@ -112,7 +112,7 @@ def draw_grid(t,grid_size,num_rows,num_collums,start_x,start_y,num_obstruction):
     obstruction_location = []
     t.shapesize(1.6,1.6)
     for i in range(num_obstruction):
-        obstruction_location.append(goto_grid(t,random.randint(1,32),random.randint(1,15),id=[0,0]))
+        obstruction_location.append(goto_grid(t,random.randint(2,32),random.randint(2,15),id=[0,0]))
         t.pendown()
         t.stamp()
         t.penup()

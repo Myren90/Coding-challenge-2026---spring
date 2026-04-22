@@ -15,12 +15,15 @@ def add_to_attack_list(player_id,x,y):
 
 def get_data():
     global damage
-    return attack_list, damage,conditions
+    return attack_list, damage, conditions
+
+def reset():
+    global damage
+    damage = 0
 
 
 def play_card(id,t,player_id,terrain):
     global damage
-    damage = 0
     block_terrian = copy.deepcopy(terrain)
     current_pos = player_id[:]
     
@@ -92,5 +95,5 @@ def play_card(id,t,player_id,terrain):
         add_to_attack_list(player_id,1,-1)
         add_to_attack_list(player_id,-1,-1)
 
-
+    #print(f"activate card: {damage}")
     return current_pos

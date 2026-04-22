@@ -10,8 +10,10 @@ first code writen and could be cleaned up
 t = turtle.Turtle(visible=False)
 t.speed(0)
 
+help = True
+
 def draw_decks(cooldowns): #draws the 5 main decks and their number and cooldown
-    t.clear()
+    clear_decks()
     t.pendown()
     t.pensize(3)
     t.teleport(-300, - 200)
@@ -51,7 +53,7 @@ def write_multilined_text(t,text, start_pos=(0, 0), max_width=40, line_height=30
     turtle.update()
 
 def draw_card_in_decks(deck_num,color="lightgrey"): #draws cards of selected decks
-    t.clear()
+    clear_decks()
     t.pendown()
     t.pensize(5)
     t.teleport(-300, - 200)
@@ -79,5 +81,29 @@ def draw_card_in_decks(deck_num,color="lightgrey"): #draws cards of selected dec
         g += 1
     turtle.update()
 
+def draw_deck_number(deck_num):
+    t.teleport(-450, - 250)
+    t.write(deck_num,font=("Arial",20,"normal"))
+    turtle.update()
+
 def clear_decks(): #removes the decks from the screen
     t.clear()
+    draw_explainer()
+
+def draw_explainer():
+    t.color("Black")
+    global help
+    if help == True:
+        t.teleport(-590,300)
+        text = "Press space to start | Backspace to quit | H to hide/show this explainer. Press 1, 2, 3, 4, or 5 to select a hand (Space to go back to deck view). Press enter to play selected hand. Use number keys to play cards in hand until all cards are played. The blue numbers on the hands are the hands cooldown between uses."
+        write_multilined_text(t, text,(t.xcor(),t.ycor()), 25, 20,("Arial",12,"normal") )
+    else:
+        t.clear()
+    turtle.update()
+
+def change_state():
+    global help
+    if help:
+        help = False
+    else:
+        help = True

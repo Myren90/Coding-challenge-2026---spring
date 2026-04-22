@@ -75,10 +75,23 @@ enemy3 = Enemy.enemy_class(blocked_terrian)
 enemies_on_board = [enemy1,enemy2,enemy3]
 #main game loop
 while sentry:
+    Deck_manager.draw_explainer()
+    while True:
+        if keyboard.is_pressed("Space"):
+            break
+        elif keyboard.is_pressed("escape"):
+            sentry = False
+            break
+        elif keyboard.is_pressed("h"):
+            Deck_manager.change_state()
+            Deck_manager.draw_explainer()
+            time.sleep(0.5)
+    if sentry == False:
+        break
     player_id = Card_manager.card_menue(decks,player,player_id,blocked_terrian,cooldowns)
     attack_list,damage,conditions = Activate_cards.get_data()
+    Activate_cards.reset()
     clean_data(attack_list)
-    print(attack_list)
     for i in enemies_on_board:
         time.sleep(.25)
         i.take_damage(attack_list,damage)
@@ -88,23 +101,20 @@ while sentry:
     for i in range(len(cooldowns)):
         if cooldowns[i] > 0:
             cooldowns[i] -= 1
-    while True:
-        if keyboard.is_pressed("Space"):
-            break
-        elif keyboard.is_pressed("escape"):
-            sentry = False
-            break
+
+    sentry = player_controller.get_data()
+    
     
 
 print("Game end")
 
 
-#TODO fix ememey take damage code
-#TODO fix emeys spawning on terrain or on player/near player
-#TODO game end
-#TODO quite
-#TODO dispay which deck you have open
-#TODO Diagram of card ability
-#TODO enemy variance
-#TODO help button
+
+# fix emeys spawning on terrain or on player/near player
+# game end
+#TODO (not able) quite
+# dispay which deck you have open
+#TODO (not able) Diagram of card ability 
+# enemy variance
+# help button
 #TODO deck building element

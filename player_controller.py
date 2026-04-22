@@ -5,7 +5,7 @@ import grid_turtle_code
 """
 player code, handles player health and will manage several different parts
 """
-health = 100
+health = 30
 health_bar = turtle.Turtle(visible=False)
 
 def setup_player(t,player_id):
@@ -24,11 +24,18 @@ def player_health(damage):
     health_bar.teleport(-400,0)
     health_bar.begin_fill()
     health_bar.goto(-420,0)
-    health_bar.goto(-420,health*2)
-    health_bar.goto(-400,health*2)
+    health_bar.goto(-420,health*5)
+    health_bar.goto(-400,health*5)
     health_bar.goto(-400,0)
     health_bar.end_fill()
     turtle.update()
+
+def get_data():
+    global health
+    if health > 0:
+        return True
+    else:
+        return False
 
 
     

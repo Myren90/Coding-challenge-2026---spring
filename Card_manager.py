@@ -15,7 +15,7 @@ def card_player(current_hand,player,player_id,blocked_terrian,cooldown,active_de
                 current_hand[i] = -1
                 Deck_manager.draw_card_in_decks(current_hand,"green")
         if all(i == -1 for i in current_hand): #adds cooldown to played deck
-            cooldown[active_deck-1] += 2
+            cooldown[active_deck-1] += 3
             return False,player_id
         else:
             return True,player_id
@@ -53,4 +53,8 @@ def card_menue(decks,player,player_id,blocked_terrian,cooldowns): # this is wher
 
         if keyboard.is_pressed("9"): #infinite loops stopper for debuging
             sentry = False
+
+        if active_deck != 0:
+            Deck_manager.draw_deck_number(active_deck)
+
     return player_id
